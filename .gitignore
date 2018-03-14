@@ -1,6 +1,8 @@
 #Folder with data files
 Data/
 
+#Qgis temporary files 
+.qgs~
 
 # History files
 .Rhistory
