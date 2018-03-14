@@ -9,6 +9,7 @@
 
 library(raster)
 library(dismo)
+library(rJava)
 
 library(maptools)
 data(wrld_simpl)
@@ -61,7 +62,7 @@ points(pres_test, pch='+', col='blue')
 # Dismo has a function ‘maxent’ that communicates with this program. To use it you must first download the program from http://www.cs.princeton.edu/~schapire/maxent/. (already saved in the folder maxent) Put the file maxent.jar in the java folder of the dismo package. That is the folder returned by system.file("java", package="dismo"). Please note that this program (maxent.jar) cannot be redistributed or used for commercial purposes.
 
 jar <- paste(system.file(package="dismo"), "/java/maxent.jar", sep='')
-xm <- maxent(predictors, pres_train, factors='biome')
+xm <- maxent(predictors, pres_train)
 
 plot(xm)
 
