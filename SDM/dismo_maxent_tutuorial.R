@@ -6,10 +6,11 @@
 # java app java -mx512m -jar /Users/vira/Documents/PhD/WSSP\ Modelling/maxent/maxent.jar
 ###################################################################################
 
+options(java.parameters = "-Xmx1g" )
 
 library(raster)
 library(dismo)
-library(rJava)
+# library(rJava)
 
 library(maptools)
 data(wrld_simpl)
