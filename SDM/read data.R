@@ -2,7 +2,7 @@
 
 require(rgdal)
 require(raster)
-
+require(maptools)
 
 setwd("Data")
 
@@ -20,11 +20,7 @@ setwd("Data package 20180309")
 tiffiles = list.files(pattern ='*.tif$', full.names=FALSE, include.dirs=FALSE, no..=TRUE )
 
 
-filenames=substr(basename(tiffiles), 1,
-								 nchar(basename(tiffiles)) - 4)
-
 filenames=NULL
-
 for (i in tiffiles) {
 	#create RasterLayer objects with corresponding names of the files
 
@@ -40,8 +36,18 @@ for (i in tiffiles) {
 
 
 
+## read all the shapefiles from the folder
+shapefiles = list.files(pattern ='*.shp$', full.names=FALSE, include.dirs=FALSE, no..=TRUE )
 
+for (i in shapefiles) {
 
+	# read the shape file
+	name = substr(basename(i), 1, nchar(basename(i)) - 4) #remove extension from the names
+
+	do.call('=',list(name, readShapeSpatial(i)))
+
+	filenames=c(filenames,name)
+}
 
 
 
