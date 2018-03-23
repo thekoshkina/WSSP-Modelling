@@ -2,7 +2,8 @@
 Data/
 
 #Qgis temporary files 
-*.qgs~
+*.qgs
+
 
 # History files
 .Rhistory
