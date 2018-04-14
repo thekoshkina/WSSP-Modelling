@@ -6,11 +6,12 @@
 # java app java -mx512m -jar /Users/vira/Documents/PhD/WSSP\ Modelling/maxent/maxent.jar
 ###################################################################################
 
-options(java.parameters = "-Xmx1g" )
+# options(java.parameters = "-Xmx1g" )
+dyn.load('/Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/jre/lib/server/libjvm.dylib') #to make java (and maxent as a result) work
 
 library(raster)
 library(dismo)
-# library(rJava)
+library(rJava)
 
 library(maptools)
 data(wrld_simpl)
@@ -77,3 +78,4 @@ tr <- threshold(e, 'spec_sens')
 plot(px > tr, main='presence/absence')
 plot(wrld_simpl, add=TRUE, border='dark grey')
 points(pres_train, pch='+')
+

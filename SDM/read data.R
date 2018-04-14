@@ -20,6 +20,9 @@ setwd("Data package 20180309")
 tiffiles = list.files(pattern ='*.tif$', full.names=FALSE, include.dirs=FALSE, no..=TRUE )
 
 
+roads=raster("/Volumes/Second/roads/Roads_100")
+plot(roads)
+
 filenames=NULL
 for (i in tiffiles) {
 	#create RasterLayer objects with corresponding names of the files
@@ -30,6 +33,11 @@ for (i in tiffiles) {
 
 	filenames=c(filenames,name)
 }
+
+
+
+
+
 
 
 
@@ -48,10 +56,6 @@ for (i in shapefiles) {
 
 	filenames=c(filenames,name)
 }
-
-
-
-
 
 
 

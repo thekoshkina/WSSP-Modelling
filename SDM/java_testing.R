@@ -1,12 +1,8 @@
-# java returns an error when i try to run maxent.
-# in this script i'm trying to determine if the error is caused be jdk or by maxent
 
-install.packages('rJava', type='source')
-
-# library(rJava)
-.jinit()
+dyn.load('/Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/jre/lib/server/libjvm.dylib')
+library(rJava)
 
 
-	library(rJava)
-	library(dismo)
-	maxent()
+library(dismo)
+maxent()
+
