@@ -113,44 +113,88 @@ for (i in flora_names)
 
 }
 
-### Transform Bionet data ---------------------------------------------------
+### Transform Bionet SURROUNDING data  - all species in the area ---------------------------------------------------
 require(rgdal)
 
-# bionet_surroundings <- readOGR(dsn = "Data/BionetRecords/26276_Habitat_models.gdb", layer = "All_Bionet_Records_CumberlandPlainIBRA_and_Surrounds")
+fc_list <- ogrListLayers("Data/BionetRecords/26276_Habitat_models.gdb")
+print(fc_list)
+
+bionet_surroundings <- readOGR(dsn = "Data/BionetRecords/26276_Habitat_models.gdb", layer = "All_Bionet_Records_CumberlandPlainIBRA_and_Surrounds")
+proj4string(bionet_surroundings)=Study_area@proj4string
+
+inside.cumberland <- !is.na(over(bionet_surroundings, as(Study_area, "SpatialPolygons")))
+
 # # plot(bionet_surroundings)
+
+#### select points from Cumberland IBRA
 # proj4string(bionet_surroundings)=Study_area@proj4string
 # bionet_cumberland = bionet_surroundings[Study_area, ]
+
+
 # write.csv( bionet_cumberland@data, file="Data/bionet_cumberland.csv")
 # add a record of this dataset in the dataset summary file
 # bionet_cumberland_table=read.csv(file="Data/bionet_cumberland.csv")
-# cat( paste ("bionet_cumberland_table","Bionet records that are inside the Cumberland plane IBRA subregion", length(cumberland_names), dim(bionet_cumberland_table)[1],  dim(bionet_cumberland_table)[2], min(as.Date(bionet_cumberland_table$eventDate)),max(as.Date(bionet_cumberland_table$eventDate)), sep=","),file= "Data/data_summary.csv", append=TRUE)
+# write( paste ("bionet_cumberland_table","Bionet records that are inside the Cumberland plane IBRA subregion", length(cumberland_names), dim(bionet_cumberland_table)[1],  dim(bionet_cumberland_table)[2], min(as.Date(bionet_cumberland_table$eventDate)),max(as.Date(bionet_cumberland_table$eventDate)), sep=","),file= "Data/data_summary.csv", append=TRUE)
+# write("\n",file= "Data/data_summary.csv", append=TRUE )
 
 bionet_cumberland_table=read.csv(file="Data/bionet_cumberland.csv")
 # head(bionet_cumberland_table[,1:42])
 
 cumberland_species=NULL
 cumberland_names = unique(bionet_cumberland_table$scientificName)
-write.csv(cumberland_names, file="Data/cumberland_names.csv")
+
+# write.csv(cumberland_names, file="Data/cumberland_names.csv")
+
 
 for (i in cumberland_names)
 {
 	tmp=bionet_cumberland_table[bionet_cumberland_table$scientificName==i,]
 
 	name=i
-	name=gsub(" ", "_",name, fixed = TRUE)
-	name=gsub("-", "_",name, fixed = TRUE)
-	name=gsub("/", "_",name, fixed = TRUE)
-	name=gsub(".", "",name, fixed = TRUE)
-	name=gsub("(", "",name, fixed = TRUE)
-	name=gsub(")", "",name, fixed = TRUE)
-	name=gsub("'", "",name, fixed = TRUE)
-	name=gsub("<", "",name, fixed = TRUE)
+	# remove special characters, spaces, douple underscores and trailing unserscores
+	name  = gsub("[^0-9A-Za-z]","_" , name ,ignore.case = TRUE)
+	name  = gsub("__","_" , name ,ignore.case = TRUE)
+	name  = gsub("_$","" , name ,ignore.case = TRUE)
+	name  = gsub("^_","" , name ,ignore.case = TRUE)
 
 	cumberland_species=c(cumberland_species, name)
 
 	do.call('=',list(name,tmp))
 
-	write.csv(eval(parse(text = name)), file=paste("Data/Bionet_cumberland/",name,".csv", sep=""))
+	write.csv(eval(parse(text = name)), file=paste("Data/Bionet_cumberland_species/",name,".csv", sep=""))
+
+}
+
+
+#select points that are in the geodatabase All_Bionet_Records_CumberlandPlainIBRA_and_Surrounds but not in the area of cubmerland plain IBRA subregion
+
+
+bionet_outside<-bionet_surroundings[is.na(over(bionet_surroundings,Study_area)),]
+write.csv( bionet_outside@data, file="Data/bionet_outside.csv")
+
+bionet_outside_table=read.csv(file="Data/bionet_outside.csv")
+
+outside_species=NULL
+outside_names = unique(bionet_outside_table$scientificName)
+
+write( paste ("bionet_outside.csv","Bionet records that are outside of the Cumberland plane IBRA subregion but still are in the layer All_Bionet_Records_CumberlandPlainIBRA_and_Surrounds", length(outside_names), dim(bionet_outside_table)[1],  dim(bionet_outside_table)[2], min(as.Date(bionet_outside_table$eventDate)),max(as.Date(bionet_outside_table$eventDate)), sep=","),file= "Data/data_summary.csv", append=TRUE)
+
+for (i in outside_names)
+{
+	tmp=bionet_outside_table[bionet_outside_table$scientificName==i,]
+
+	name=i
+	# remove special characters, spaces, douple underscores and trailing unserscores
+	name  = gsub("[^0-9A-Za-z]","_" , name ,ignore.case = TRUE)
+	name  = gsub("__","_" , name ,ignore.case = TRUE)
+	name  = gsub("_$","" , name ,ignore.case = TRUE)
+	name  = gsub("^_","" , name ,ignore.case = TRUE)
+
+	outside_species=c(outside_species, name)
+
+	do.call('=',list(name,tmp))
+
+	write.csv(eval(parse(text = name)), file=paste("Data/Bionet_outside_species/",name,".csv", sep=""))
 
 }
 
@@ -158,8 +202,129 @@ for (i in cumberland_names)
 
 
 
-# bionet_out_surrounding = bionet_surroundings[!Study_area, ] #select points that are in the geodatabase All_Bionet_Records_CumberlandPlainIBRA_and_Surrounds but not in the area of cubmerland plain IBRA subregion
+
+# bionet_out_surrounding = bionet_surroundings[!Study_area, ]
 
 plot(Study_area)
 plot(bionet_cumberland, add=TRUE)
+
+
+### Transform Bionet NSW data  - some species in the whole NSW ---------------------------------------------------
+
+require(rgdal)
+
+bionet_nsw <- readOGR("Data/BionetRecords/Bionet_Records_for_SDM_NSW.shp")
+
+proj4string(bionet_nsw)=Study_area@proj4string
+
+nsw_inside_cumberland = !is.na(over(bionet_nsw, as(Study_area, "SpatialPolygons")))
+
+
+sdm_cumberland<-bionet_nsw[nsw_inside_cumberland,]
+
+
+
+write.csv(sdm_cumberland@data, file="Data/sdm_cumberland.csv")
+
+sdm_cumberland_table=read.csv(file="Data/sdm_cumberland.csv")
+
+
+sdm_cumberland_names = unique(sdm_cumberland_table$Bionet_A36)
+
+write( paste ("sdm_cumberland.csv","Bionet records that are inside of the Cumberland plane IBRA subregion from the layer All_Bionet_Records_for_SDM_NSW", length(sdm_cumberland_names), dim(sdm_cumberland_table)[1],  dim(sdm_cumberland_table)[2], min(as.Date(sdm_cumberland_table$Bionet_A39)),max(as.Date(sdm_cumberland_table$Bionet_A40)),"Earliest and latest dates were calculated using columns Bionet_A39 and Bionet_A40", sep=","),file= "Data/data_summary.csv", append=TRUE)
+write("\n",file= "Data/data_summary.csv", append=TRUE )
+
+sdm_cumberland_species=NULL
+for (i in sdm_cumberland_names)
+{
+	tmp=sdm_cumberland_table[sdm_cumberland_table$Bionet_A36==i,]
+
+	name=i
+	# remove special characters, spaces, douple underscores and trailing unserscores
+	name  = gsub("[^0-9A-Za-z]","_" , name ,ignore.case = TRUE)
+	name  = gsub("__","_" , name ,ignore.case = TRUE)
+	name  = gsub("_$","" , name ,ignore.case = TRUE)
+	name  = gsub("^_","" , name ,ignore.case = TRUE)
+
+	sdm_cumberland_species=c(sdm_cumberland_species, name)
+
+	do.call('=',list(name,tmp))
+
+	write.csv(eval(parse(text = name)), file=paste("Data/Bionet_sdm_cumberland_species/",name,".csv", sep=""))
+
+}
+
+
+
+
+
+sdm_outside<-bionet_nsw[!nsw_inside_cumberland,]
+
+
+write.csv(sdm_outside@data, file="Data/sdm_outside.csv")
+
+sdm_outside_table=read.csv(file="Data/sdm_outside.csv")
+
+
+sdm_outside_names = unique(sdm_outside_table$Bionet_A36)
+
+write( paste ("sdm_outside.csv","Bionet records that are outside of the Cumberland plane IBRA subregion but still are in the layer All_Bionet_Records_for_SDM_NSW", length(sdm_outside_names), dim(sdm_outside_table)[1],  dim(sdm_outside_table)[2], min(as.Date(sdm_outside_table$Bionet_A39)),max(as.Date(sdm_outside_table$Bionet_A40)),"Earliest and latest dates were calculated using columns Bionet_A39 and Bionet_A40", sep=","),file= "Data/data_summary.csv", append=TRUE)
+write("\n",file= "Data/data_summary.csv", append=TRUE )
+
+sdm_outside_species=NULL
+for (i in sdm_outside_names)
+{
+	tmp=sdm_outside_table[sdm_outside_table$Bionet_A36==i,]
+
+	name=i
+	# remove special characters, spaces, douple underscores and trailing unserscores
+	name  = gsub("[^0-9A-Za-z]","_" , name ,ignore.case = TRUE)
+	name  = gsub("__","_" , name ,ignore.case = TRUE)
+	name  = gsub("_$","" , name ,ignore.case = TRUE)
+	name  = gsub("^_","" , name ,ignore.case = TRUE)
+
+	sdm_outside_species=c(sdm_outside_species, name)
+
+	do.call('=',list(name,tmp))
+
+	write.csv(eval(parse(text = name)), file=paste("Data/Bionet_sdm_outside_species/",name,".csv", sep=""))
+
+
+}
+
+# Table of the all the species recornds inside and outside the the Cumberland plain--------------------
+proportion_summary = NULL
+for (i in sdm_cumberland_species)
+{
+	inside = read.csv(file=paste("Data/Bionet_sdm_cumberland_species/", i, ".csv", sep=""))
+
+	if(i%in%sdm_outside_species)
+		{
+			outside = read.csv(file=paste("Data/Bionet_sdm_outside_species/", i, ".csv", sep=""))
+			proportion = (dim(inside)[1]/(dim(outside)[1]+dim(inside)[1]))*100
+			tmp = c(i,dim(inside)[1], dim(outside)[1], proportion)
+
+			}else
+			{
+				tmp =c(i,dim(inside)[1], 0, 100 )
+			}
+
+	proportion_summary = rbind(proportion_summary, tmp)
+
+
+}
+
+colnames(proportion_summary) = c("Species", "Records_inside_Cumberland", "Records_outside_Cumberland", "Percent inside (%)")
+
+
+write.csv(proportion_summary, file="Data/Species_records.csv")
+
+# ------------------
+
+
+
+
+
+
+
 
