@@ -1,5 +1,8 @@
 #Folder with data files
 Data/
+Fauna/
+
+
 
 #Qgis temporary files 
 *.qgs
