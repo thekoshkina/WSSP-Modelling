@@ -4,23 +4,15 @@ require(maptools)
 require(spatstat)
 library(rgeos)
 
-Macarthur_Vegetation = readOGR("Data/Data package 20180309/26276_Macarthur_Vegetation_DRAFT_20180223.shp")
-Cadastre = readOGR("Data/Data package 20180309/Cadastre.shp")
+# Macarthur_Vegetation = readOGR("Data/Data package 20180309/26276_Macarthur_Vegetation_DRAFT_20180223.shp")
+# Cadastre = readOGR("Data/Data package 20180309/Cadastre.shp")
 Study_area = readOGR("Data/Data package 20180309/Cumberland_IBRA_subregion.shp")
 Cumberland=Study_area
-Plain_west = readOGR("Data/Data package 20180309/CumberlandPlainWest_2013_E_4207.shp")
-Priority_Growth = readOGR("Data/Data package 20180309/Priority_Growth_Areas.shp")
-Western_Vegetation = readOGR("Data/Data package 20180309/WesternSydneyVeg_prelimDRAFT20180309.shp")
+# Plain_west = readOGR("Data/Data package 20180309/CumberlandPlainWest_2013_E_4207.shp")
+# Priority_Growth = readOGR("Data/Data package 20180309/Priority_Growth_Areas.shp")
+# Western_Vegetation = readOGR("Data/Data package 20180309/WesternSydneyVeg_prelimDRAFT20180309.shp")
 
-Roads_large=readOGR("Data/SE_AUST_Roads/se_australia_roads_only.shp")
+Roads=readOGR("Data/Covariates cumberland/roads/roads_c.shp")
 
-
-Roads=mask(Roads_large, Cumberland)
-proj4string(Roads_large)=Study_area@proj4string
-
-
-Roads = gIntersection(Cumberland, Roads_large , byid=TRUE)
-Roads=out
-plot(Roads)
 
 Road_density= spatstat::density.psp(Roads)
