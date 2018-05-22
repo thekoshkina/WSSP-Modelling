@@ -4,8 +4,17 @@ Fauna/
 
 
 
+
 #Qgis temporary files 
-*.qgs
+/*.qgs
+/*.shp
+/*.cpg
+/*.dbf
+/*.prj
+/*.shx
+/*.qpj
+
+
 
 
 # History files
