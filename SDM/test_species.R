@@ -15,7 +15,7 @@ require(maptools)
 
 species=c("Myotis_macropus", "Miniopterus_schreibersii_oceanensis", "Ninox_strenua,Epacris_purpurascens_var_purpurascens", "Acacia_pubescens")
 
-presences <- read.csv("Data/precense records/Cumberland_species_csv/Acacia_pubescens.csv")
+preslocs<- read.csv("Data/precense records/Cumberland_species_csv/Acacia_pubescens.csv")[ ,c('Bionet_A30', 'Bionet_A31')]
 # elevation = raster("Data/Data package 20180309/DEM_25m.tif")
 
 
@@ -37,7 +37,7 @@ plot(!is.na(mask), legend=FALSE)
 points(bg, cex=0.5)
 
 
-presvals <- extract(predictors, bradypus)
+presvals <- extract(predictors, preslocs)
 
 # # now we repeat the sampling, but limit
 # # the area of sampling using a spatial extent >
