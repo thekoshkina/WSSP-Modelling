@@ -32,13 +32,13 @@ predictors <- stack(files)
 
 
 
-### add zeros instead of NA in the vegetation layer
-predictors <- dropLayer(predictors, 'vegetation_c')
-vegetation=raster(paste(folder, '/', 'vegetation_c.tif', sep=''))
-vegetation[is.na(vegetation[])] <- 0
-plot(vegetation)
-predictors <- addLayer(predictors, vegetation)
-#
+# ### add zeros instead of NA in the vegetation layer
+# predictors <- dropLayer(predictors, 'vegetation_c')
+# vegetation=raster(paste(folder, '/', 'vegetation_c.tif', sep=''))
+# vegetation[is.na(vegetation[])] <- 0
+# plot(vegetation)
+# predictors <- addLayer(predictors, vegetation)
+# #
 
 
 # create a folder for output
@@ -107,6 +107,7 @@ dev.off()
 jar <- paste(system.file(package="dismo"), "/java/maxent.jar", sep='')
 xm <- maxent(predictors, pres_train, factors='vegetation_c')
 # xm <- maxent(predictors, pres_train)
+
 
 
 
