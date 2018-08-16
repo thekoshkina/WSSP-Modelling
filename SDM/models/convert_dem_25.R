@@ -1,19 +1,21 @@
 
-dem25 = raster('Data/IBRA_cumberland/DEM_25m_c.tif')
-veg=raster('Data/IBRA_cumberland/vegetation_c.tif')
 
-mask = raster('Data/Cumberland/ct_tempmtwp_c.tif')
+dem25 = raster('Data/old/DEM_c.tif')
+veg = raster('Data/old/vegetation_c.tif')
 
-dem =resample(dem25,mask)
+mask = raster('Data/Cumberland/ce_radhp_c.tif')
+
+dem = resample(dem25, mask)
 plot(dem)
+writeRaster(dem,
+						'Data/Cumberland/DEM_c.tif' ,
+						format = "GTiff",
+						overwrite = TRUE)
 
 
-veg2 =resample(veg,mask,, vegitation_c$PCTNo)
-plot(veg)
-
-
-# extent(dem)=extent(mask)
-
-writeRaster(veg2,'Data/Cumberland/vegetation_c.tif' , format = "GTiff", overwrite=TRUE)
-
-
+veg2 = resample(veg, mask)
+plot(veg2)
+writeRaster(veg2,
+						'Data/Cumberland/vegetation_c.tif' ,
+						format = "GTiff",
+						overwrite = TRUE)
