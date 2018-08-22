@@ -7,17 +7,22 @@ library(caTools)
 
 
 data_folder = "Data/Cumberland/"
-
+extra_folder = "Data/Cumberland/extra"
 
 
 files=list.files(data_folder , pattern = "*.tif$", full.names=TRUE)
+extra=list.files(extra_folder , pattern = "*.tif$", full.names=TRUE)
+files=c(files,extra)
+
 no_cov=length(files) #number of covariates
 
+predictors <- stack(files)
+
 #### plot all the covariates
-dir.create(paste("Data/Plots", sub("^[^/]*", "",data_folder), sep=''), showWarnings = FALSE)
+dir.create(paste("Data/Plots", sub("^[^/]*", "",data_folder),"/", sep=''), showWarnings = FALSE)
 
 for (i in names(predictors)) {
-	plot_name = paste("Data/Plots", sub("^[^/]*", "", data_folder), i , ".png", sep = "")
+	plot_name = paste("Data/Plots", sub("^[^/]*", "", data_folder),"/", i , ".png", sep = "")
 
 	if (!file.exists(plot_name)) {
 		png(filename = plot_name,	width = 2 * ppi, height = 2 * ppi)
@@ -43,7 +48,7 @@ write.csv(resolution, file=paste(data_folder,"raster files extent resolution.csv
 
 
 # correlation matrix
-	predictors <- stack(files)
+
 	correlation = layerStats(predictors, 'pearson', na.rm=TRUE)
 	write.csv(correlation, file=paste(data_folder,"predictor correlation.csv"))
 
