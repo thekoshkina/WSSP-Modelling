@@ -21,12 +21,12 @@ library(rJava)
 
 source('utilities.R')
 
-species_list = c("Grevillea_parviflora_subsp_parviflora",
-	"Persoonia_nutans",
-	"Phascolarctos_cinereus",
-	"Persoonia_nutans"
-)
-
+# species_list = c("Grevillea_parviflora_subsp_parviflora",
+# 	"Persoonia_nutans",
+# 	"Phascolarctos_cinereus",
+# 	"Persoonia_nutans"
+# )
+species_list = c("Litoria_aurea")
 
 
 #specify folder for the precense point data and covariate data files

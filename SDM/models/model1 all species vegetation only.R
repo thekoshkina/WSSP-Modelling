@@ -24,7 +24,7 @@ source('utilities.R')
 species_list = c("Grevillea_parviflora_subsp_parviflora",
 								 "Persoonia_nutans",
 								 "Phascolarctos_cinereus",
-								 "Persoonia_nutans"
+								 "Litoria_aurea"
 )
 
 
@@ -37,8 +37,8 @@ outcome_folder = "Outcomes_Cumberland_vegetation_only/"
 dir.create(outcome_folder, showWarnings = FALSE)
 
 #read all the covariate tif files from covariate folder
-cumberland <-
-	readOGR("Data/IBRA_cumberland/Cumberland_IBRA_subregion.shp")
+cumberland = readOGR("Data/IBRA_cumberland/Cumberland_IBRA_subregion.shp")
+vegetation = readOGR("/Volumes/TOSHIBA EXT/WSSSP Modelling/SDM/Data/Rasterise_veg/IndCreditSum_Biosis_StateVeg_wPCT_Class_4283.shp")
 
 # select file with background points
 backgr_train_file = paste(outcome_folder, "backgr_test_train.rda", sep="")
@@ -64,15 +64,6 @@ for (species in species_list) {
 	predictors <- stack(files)
 
 
-
-
-	### add zeros instead of NA in the vegetation layer
-	predictors <- dropLayer(predictors, 'vegitation_pct_b_c')
-	vegetation = raster(paste(data_folder, '/', 'vegitation_pct_b_c.tif', sep =
-															''))
-	vegetation[is.na(vegetation[])] <- 0
-	plot(vegetation)
-	predictors <- addLayer(predictors, vegetation)
 
 
 
@@ -115,9 +106,16 @@ for (species in species_list) {
 	proj4string(presences_all) = cumberland@proj4string
 
 	# only select points in the study area
-	presences = presences_all[cumberland, ]
+	presences_cumberland = presences_all[cumberland, ]
+	presences = presences_cumberland[vegetation, ]
+	save(presences, file =paste(
+		species_folder, species,
+		"_presences.rda",
+		sep = ""
+	) )
 
-
+	# plot(predictors[[1]])
+	# plot(presences, add=TRUE)
 	# check if training and testing points have already been selected
 	if (!file.exists(pres_train_file)) {
 		##### select 20% of the data for testing - randomly selecting points
@@ -196,7 +194,7 @@ for (species in species_list) {
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# RUN MAXENT - all covariates --------------------------------------------------
 	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	factors = c('vegitation_pct_b_c', 'soil_c')
+	factors = c('vegitation_pct_b_c_v0', 'soil_c_v0')
 
 	model_name = "all_cov"
 	model1 = run_maxent(
