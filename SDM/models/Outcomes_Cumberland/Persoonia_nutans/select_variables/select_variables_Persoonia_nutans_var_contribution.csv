@@ -1,0 +1,9 @@
+"","variable","percent.contribution","permutation.importance"
+"1","ce_radann_c",1.0372,31.7707
+"2","ce_radlp_c",24.4349,34.877
+"3","ct_tempann_1_c",0.4872,6.2127
+"4","dl_lat_grid_c",2.9377,6.1949
+"5","dl_strmdstge2_c",22.5105,2.6773
+"6","dl_strmdstge6_c",0.5397,9.7218
+"7","soil_c",20.0998,3.9139
+"8","vegitation_pct_b_c",27.9531,4.6317

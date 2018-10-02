@@ -1,0 +1,14 @@
+"","variable","percent.contribution","permutation.importance"
+"1","DEM_c",5.5556,8e-04
+"2","ce_radann_c",1.6232,24.9571
+"3","ce_radhp_c",1.4843,3.8499
+"4","ce_radlp_c",9.2736,35.2116
+"5","ct_frostdays_lt2deg_1_c",5.9776,20.7261
+"6","ct_tempann_1_c",2.3837,0.0552
+"7","ct_tempseas_1_c",7.6842,0.5647
+"8","cw_precipseas_c",28.9263,0.6508
+"9","dl_lat_grid_c",21.1018,2.7521
+"10","dl_strmdstge6_c",2.7962,8.1198
+"11","sfc_aut_b_95_c",0.5202,0.8283
+"12","soil_c",4.4753,1.1128
+"13","vegitation_pct_b_c",8.1978,1.1708

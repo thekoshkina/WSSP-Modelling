@@ -1,0 +1,66 @@
+Species: Litoria_aurea 
+Model: select_variables
+
+Model_variation: 1 
+AUC: 0.982933200867533 
+
+Predictors:
+ce_radann_c
+ce_radhp_c
+ce_radlp_c
+ct_frostdays_lt2deg_1_c
+ct_tempann_1_c
+ct_tempseas_1_c
+cw_precipseas_c
+DEM_c
+dl_lat_grid_c
+dl_strmdstge2_c
+dl_strmdstge4_c
+dl_strmdstge6_c
+gp_k_fillspl_c
+lf_aspect_tr_c
+lf_cti_c
+lf_rough0100_c
+lf_tpi0120_c
+sfc_aut_b_95_c
+soil_c
+vegitation_pct_b_c
+
+Model_variation: 2 
+AUC: 0.993409235054354 
+
+Predictors:
+ce_radann_c
+ce_radlp_c
+ct_frostdays_lt2deg_1_c
+ct_tempann_1_c
+ct_tempseas_1_c
+cw_precipseas_c
+DEM_c
+dl_lat_grid_c
+dl_strmdstge2_c
+dl_strmdstge4_c
+dl_strmdstge6_c
+lf_aspect_tr_c
+sfc_aut_b_95_c
+soil_c
+vegitation_pct_b_c
+
+Model_variation: 3 
+AUC: 0.988528254689156 
+
+Predictors:
+ce_radann_c
+ce_radlp_c
+ct_frostdays_lt2deg_1_c
+ct_tempann_1_c
+ct_tempseas_1_c
+DEM_c
+dl_lat_grid_c
+dl_strmdstge2_c
+dl_strmdstge4_c
+dl_strmdstge6_c
+lf_aspect_tr_c
+sfc_aut_b_95_c
+soil_c
+vegitation_pct_b_c
