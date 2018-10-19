@@ -4,7 +4,7 @@ run_maxent = function(predictors, factors, species,  model_name, pres_train, pre
 	jar <- paste(system.file(package="dismo"), "/java/maxent.jar", sep='')
 	xm <- maxent(predictors, pres_train, factors=factors)
 
-	species_folder =  paste(outcome_folder, species, '/', sep = '')
+	species_folder =  outcome_folder
 	model_folder = paste(species_folder, model_name, '/', sep = '')
 	model_filename = paste(model_folder, model_name, '_', species, "_", sep = '')
 
@@ -196,4 +196,39 @@ run_maxent_reduce_variables = function(predictors, factors, species,  model_name
 
 	return(list(e, xm, px, tr, importance))
 }
+
+get_bkgr_train_test = function(backgr_train_file, background_sample){
+    if(!file.exists(backgr_train_file)){
+        #### select beckground points - randomly selecting points and save them for later
+        backgr <- randomPoints(background_sample, 1000)
+        group <- kfold(backgr, 5)
+        backgr_train <- backgr[group != 1, ]
+        backgr_test <- backgr[group == 1, ]
+        #
+        save(backgr_train, backgr_test, file=backgr_train_file)
+        
+        print(paste("Testing and training points for bakground have been randomly selected and saved in the file: ", backgr_train_file))
+        
+    }else{
+        load(backgr_train_file)
+        print(paste("Testing and training points for background have been loaded from the file: ", backgr_train_file))
+    }
+    return(list(backgr_train, backgr_test))
+}
+
+
+load_sample_file = function(background_sample_file, bias){
+    ppi=300
+    if(!file.exists(background_sample_file)) {
+        background_sample = mask(predictors, bias)
+        plot(background_sample)
+        save(background_sample,  file=background_sample_file)
+        # writeRaster(background_sample, background_sample_file, format = "GTiff", overwrite=TRUE)
+        
+    }else{
+        load(background_sample_file)
+    }
+    return(background_sample)
+}    
+
 
