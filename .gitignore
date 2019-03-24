@@ -15,6 +15,11 @@ Outcomes/
 /*.qpj
 
 
+# resutlt files
+.pdf
+.xlsx
+.docs
+
 
 
 # History files
@@ -22,7 +27,9 @@ Outcomes/
 .Rapp.history
 
 # Session Data files
+.DS*
 .RData
+.RData*
 
 # Example code in package build process
 *-Ex.R
