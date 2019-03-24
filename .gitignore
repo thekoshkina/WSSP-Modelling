@@ -35,6 +35,8 @@ Outcomes/
 *.rda
 *.csv
 *.tif
+*.png
+*.qgs
 
 
 
