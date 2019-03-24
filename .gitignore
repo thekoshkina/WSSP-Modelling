@@ -37,7 +37,7 @@ Outcomes/
 *.tif
 *.png
 *.qgs
-
+*.Rmd
 
 
 # Example code in package build process
