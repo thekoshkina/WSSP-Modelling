@@ -31,6 +31,13 @@ Outcomes/
 .RData
 *.RData*
 
+# data
+*.rda
+*.csv
+*.tif
+
+
+
 # Example code in package build process
 *-Ex.R
 
